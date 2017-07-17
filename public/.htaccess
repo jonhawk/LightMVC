@@ -1,0 +1,12 @@
+Options -MultiViews
+RewriteEngine On
+Options -Indexes
+
+# If the requested filename is not a directory,
+RewriteCond %{REQUEST_FILENAME} !-d
+# and if the requested filename is not a regular file that exists,
+RewriteCond %{REQUEST_FILENAME} !-f
+# and if the requested filename is not a symbolic link,
+RewriteCond %{REQUEST_FILENAME} !-l
+# then rewrite the URL in the following way:
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

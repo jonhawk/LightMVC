@@ -1,0 +1,26 @@
+#################
+## LightMVC
+#################
+public/assets/*
+!public/assets/index.html
+
+#################
+## tmp files
+#################
+*.tmp
+*.bak
+*.log
+
+# Windows image file caches
+[Tt]humbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac
+.DS_Store
+*.DS_Store
