@@ -4,7 +4,7 @@
  */
 function &getInstance()
 {
-    return \App::getInstance();
+    return \core\App::getInstance();
 }
 
 /**

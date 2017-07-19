@@ -1,4 +1,9 @@
 <?php
+namespace core;
+
+use \libs as libs;
+use \model as model;
+use \controller as controller;
 
 class App
 {
@@ -74,10 +79,10 @@ class App
      */
     private function openDatabaseConnection() {
         // set PDO connection options
-        $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+        $options = array(\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ, \PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING);
         // PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true (http://fischerlaender.de/php/pdo-mysql-and-nested-queries)
         try {
-            $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
+            $this->db = new \PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
             // this is necessary because before this PHP version PDO didn't support charset in constructor
             if (version_compare('5.3.6', phpversion())>=0) {
                 $this->db->exec("set names utf8");
@@ -143,7 +148,7 @@ class App
             if (method_exists($this->controller, $this->route->url_action)) {
 
                 // check if method is public
-                $reflection = new ReflectionMethod($this->controller, $this->route->url_action);
+                $reflection = new \ReflectionMethod($this->controller, $this->route->url_action);
                 if ($reflection->isPublic()) {
 
                     // call method

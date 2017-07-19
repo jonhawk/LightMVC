@@ -13,10 +13,8 @@ require APP . 'core/autoload.php';
 // load config
 require APP . 'config/config.php';
 
-// load application
-require APP . 'core/application.php';
-require APP . 'core/controller.php';
+// common functions
 require APP . 'core/common.php';
 
 // start application
-$app = new App();
+$app = new \core\App();

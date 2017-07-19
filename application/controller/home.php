@@ -1,6 +1,8 @@
 <?php
 namespace controller;
 
+use \core\Controller as Controller;
+
 /**
  * Class Home
  *

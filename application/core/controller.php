@@ -1,7 +1,7 @@
 <?php
-namespace controller;
+namespace core;
 
-use \libs as lib;
+use \libs as libs;
 use \model as model;
 
 class Controller
@@ -63,8 +63,8 @@ class Controller
         $this->lang_id  = $this->app->language->lang_id;
         $this->lang_key = $this->app->language->lang_key;
         // load helper
-        $this->helper  = new lib\helper($this->lang_key);
-        $this->request = new lib\request();
+        $this->helper  = new libs\helper($this->lang_key);
+        $this->request = new libs\request();
     }
 
 
