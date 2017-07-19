@@ -1,7 +1,7 @@
 <?php
-namespace model;
+namespace core;
 
-class models
+class Model
 {
     /** @var null/object Main application */
     protected $app = null;

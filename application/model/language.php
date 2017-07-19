@@ -1,14 +1,8 @@
 <?php
 namespace model;
 
-class language
+class language extends \core\Model
 {
-    /** @var null/object Main application */
-    private $app = null;
-
-    /** @var null Database Connection */
-    private $db = null;
-
     /** @var int language id */
     public $lang_id = null;
 
@@ -27,8 +21,7 @@ class language
      */
     function __construct()
     {
-        $this->app =& getInstance();
-        $this->db  = $this->app->db;
+        parent::__construct();
         $this->setLangId($this->app->route->lang_key);
     }
 

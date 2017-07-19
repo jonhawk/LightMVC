@@ -1,7 +1,7 @@
 <?php
 namespace model;
 
-class sample extends models
+class sample extends \core\Model
 {
 
     function __construct($tag=null)
