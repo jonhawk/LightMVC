@@ -3,6 +3,7 @@
 #################
 public/assets/*
 !public/assets/index.html
+.idea/
 
 #################
 ## tmp files
