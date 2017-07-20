@@ -1,12 +1,6 @@
 <?php
-namespace controller;
+namespace core;
 
-use \core\Controller as Controller;
-
-/**
- * Class Error
- *
- */
 class Error extends Controller
 {
     /**

@@ -1,7 +1,7 @@
 <?php
-namespace libs;
+namespace core;
 
-class route
+class Route
 {
     /** @var null The controller */
     public $url_controller = null;

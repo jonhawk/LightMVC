@@ -1,7 +1,7 @@
 <?php
-namespace libs;
+namespace core;
 
-class helper
+class Helper
 {
     /** @var string language key  */
     private $lang_key = null;

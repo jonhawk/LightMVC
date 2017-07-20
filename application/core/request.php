@@ -1,9 +1,7 @@
 <?php
-namespace libs;
+namespace core;
 
-use \libs as lib;
-
-class request
+class Request
 {
     public $post = null;
 

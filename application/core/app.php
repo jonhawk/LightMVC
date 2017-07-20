@@ -1,31 +1,27 @@
 <?php
 namespace core;
 
-use \libs as libs;
-use \model as model;
-use \controller as controller;
-
 class App
 {
-    /** @var object self instance */
+    /** @var object             App         */
     private static $instance;
 
-    /** @var null/object database connection */
+    /** @var null/object        \PDO        */
     public $db = null;
 
-    /** @var null/object route */
+    /** @var null/object        Route       */
     public $route = null;
 
-    /** @var null/object controller */
+    /** @var null/object        Controller  */
     public $controller = null;
 
-    /** @var null/object language */
+    /** @var null/object        Language    */
     public $language = null;
 
-    /** @var null/object view */
+    /** @var null/object        View        */
     public $view = null;
 
-    /** @var null/object error controller */
+    /** @var null/object        Error       */
     public $error = null;
 
 
@@ -97,7 +93,7 @@ class App
      * Load route and split URL
      */
     private function loadRoute() {
-        $this->route    = new libs\route();
+        $this->route    = new Route();
     }
 
     /**
@@ -105,21 +101,21 @@ class App
      * @param string language key
      */
     private function loadLanguage() {
-        $this->language = new model\language();
+        $this->language = new Language();
     }
 
     /**
      * Load view
      */
     private function loadView() {
-        $this->view     = new libs\view();
+        $this->view     = new View();
     }
 
     /**
      * Load error controller
      */
     private function loadError() {
-        $this->error    = new controller\Error();
+        $this->error    = new Error();
         /*  */
 
     }

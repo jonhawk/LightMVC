@@ -1,7 +1,7 @@
 <?php
-namespace libs;
+namespace core;
 
-class view
+class View
 {
     /** @var null/object Main application */
     private $app = null;
@@ -29,7 +29,7 @@ class view
         $this->language =& $this->app->language;
         $this->route    =& $this->app->route;
         $this->user     =& $this->app->user;
-        $this->request  = new \libs\request();
+        $this->request  = new Request();
     }
 
     /**

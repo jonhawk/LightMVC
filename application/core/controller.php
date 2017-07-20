@@ -1,53 +1,38 @@
 <?php
 namespace core;
 
-use \libs as libs;
-use \model as model;
-
 class Controller
 {
-    /** @var null/object Main application */
+    /** @var null/object        App                   */
     protected $app = null;
 
-    /** @var null/object route */
+    /** @var null/object        Route                 */
     private $route = null;
 
-    /** @var null/object Database Connection */
+    /** @var null/object        \PDO                  */
     public $db = null;
 
-    /** @var null/object Language */
+    /** @var null/object        Language              */
     public $language = null;
 
-    /** @var null/int Language id */
+    /** @var null/int           Language->lang_id     */
     public $lang_id = null;
 
-    /** @var string Language key */
+    /** @var string             Language->lang_key    */
     public $lang_key = DEFAULT_LANGUAGE;
 
-    /** @var null/object Helper */
+    /** @var null/object        Helper                */
     public $helper = null;
 
-    /** @var null/object Request */
+    /** @var null/object        Request               */
     public $request = null;
 
-    /** @var null/object View */
+    /** @var null/object        View                  */
     public $view = null;
 
-    /** @var null/object View */
+    /** @var null/object        Error                 */
     public $error = null;
 
-    /** @var null/object User */
-    public $user = null;
-
-
-    /**
-     * @param object \PDO
-     * @param object \libs\view
-     * @param object \libs\route
-     * @param object \libs\error
-     * @param object \libs\language
-     * @param object \libs\helper
-     */
     function __construct()
     {
         // get app instance
@@ -63,8 +48,8 @@ class Controller
         $this->lang_id  = $this->app->language->lang_id;
         $this->lang_key = $this->app->language->lang_key;
         // load helper
-        $this->helper  = new libs\helper($this->lang_key);
-        $this->request = new libs\request();
+        $this->helper  = new Helper($this->lang_key);
+        $this->request = new Request();
     }
 
 

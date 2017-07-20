@@ -1,7 +1,7 @@
 <?php
-namespace model;
+namespace core;
 
-class language extends \core\Model
+class Language extends Model
 {
     /** @var int language id */
     public $lang_id = null;
