@@ -11,9 +11,9 @@ class Error extends Controller
     {
         // load views
         header("HTTP/1.0 404 Not Found");
-        $this->view->load('_templates/header');
-        $this->view->load('error/index');
-        $this->view->load('_templates/footer');
+        $this->view->load('layout/header');
+        $this->view->load('error/404');
+        $this->view->load('layout/footer');
         die();
     }
 

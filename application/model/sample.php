@@ -3,11 +3,11 @@ namespace model;
 
 class sample extends \core\Model
 {
-
-    function __construct($tag=null)
-    {
+    function __construct() {
         parent::__construct();
-        /*...*/
+        /*
+         * $this->app   \core\App
+         * $this->db    \PDO
+         */
     }
- 
 }

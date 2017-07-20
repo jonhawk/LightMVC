@@ -9,10 +9,9 @@
 
 // Pages
 #$route['pages/(.*)'] = 'pages/index/$1';
-#$route['(\w{2})/pages/(.*)'] = 'pages/index/$2';
-#$route['404_override'] = 'my404';
 
 // Language
+#$route['(\w{2})/pages/(.*)'] = 'pages/index/$2';
 #$route['(\w{2})/(.*)'] = '$2';
 #$route['(\w{2})'] = $route['default_controller'];
 #$route['admin/(\w{2})/(.*)'] = "admin/$2";

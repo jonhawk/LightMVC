@@ -3,8 +3,7 @@ namespace lib;
 
 class sample
 {
-    function __construct()
-    {
+    function __construct() {
 
     }
 }

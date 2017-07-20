@@ -3,22 +3,18 @@ namespace core;
 
 class Language extends Model
 {
-    /** @var int language id */
+    /** @var int        Language id                 */
     public $lang_id = null;
 
-    /** @var string language key */
+    /** @var string     Language key                */
     public $lang_key = null;
 
-    /** @var string default language key */
+    /** @var string     Default language key        */
     public $default_key = DEFAULT_LANGUAGE;
 
-    /** @var array error status un message */
+    /** @var array      Error status un message     */
     public $error = null;
 
-    /**
-     * @param object $db A PDO database connection
-     * @param string language key
-     */
     function __construct()
     {
         parent::__construct();

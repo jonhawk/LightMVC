@@ -11,23 +11,22 @@ class Home extends Controller {
 
     /**
      * PAGE: index
-     * This is a sample page method which shows how to handle basic things.
      */
-    public function index($type='all', $tag=null)
+    public function index($type='')
     {
-        // check for valid type, otherwise show 404
-        if (!empty($type) && !in_array($type, ['all','image','video']))
+        if (!in_array($type, ['image','video','']))
             $this->error->show404();
 
-        // load some classes and save them in array
-        $data['title']          = 'My Posts';
-        $data['posts']          = new \model\posts($tag);
-        $data['media']          = new \model\media($type);
+        $helloClass     = new \Hello\HelloClass();
+        $sampleLib      = new \lib\sample();
+        $sampleModel    = new \model\sample();
 
+        $data['hello']          = $helloClass->getHello();
+        $data['title']          = $helloClass->getHello();
         // load view with prepared data
-        $this->view->load('_templates/header', $data);
-        $this->view->load('posts', $data);
-        $this->view->load('_templates/footer', $data);
+        $this->view->load('layout/header', $data);
+        $this->view->load('index', $data);
+        $this->view->load('layout/footer', $data);
     }
 
 }
