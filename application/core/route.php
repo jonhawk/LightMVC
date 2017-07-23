@@ -3,16 +3,19 @@ namespace core;
 
 class Route
 {
+    /** @var null/object    \core\App   */
+    private $app = null;
+
     /** @var null The controller */
     public $url_controller = null;
 
-    /** @var null The method (of the above controller), often also named "action" */
+    /** @var null The method (of the above controller) */
     public $url_action = null;
 
     /** @var array URL parameters */
     public $action_params = array();
 
-    /** @var array URL parameters */
+    /** @var array URL parts */
     public $url_parts = array();
 
     /** @var string Language key */
@@ -25,6 +28,7 @@ class Route
      * Construct
      */
     function __construct() {
+        $this->app =& getInstance();
         $this->loadRoutesConfig();
         $this->splitUrl();
     }
@@ -43,7 +47,7 @@ class Route
             // parse custom urls
             $url = $this->parseRoutes($url);
 
-            if (LANGUAGE_ENABLED) {
+            if ($this->app->language->enabled) {
                 // set lang key
                 $this->lang_key = isset($url[0]) ? $url[0] : null;
                 // set controller
@@ -173,7 +177,7 @@ class Route
      * Build link
      */
     public function link($url='', $lang_key=null) {
-        if (LANGUAGE_ENABLED) {
+        if ($this->app->language->enabled) {
             if (is_null($lang_key)) {
                 return URL . $this->lang_key . '/' . $url;
             } else {

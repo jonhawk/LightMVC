@@ -7,7 +7,7 @@ class Controller
     protected $app = null;
 
     /** @var null/object        Route                 */
-    private $route = null;
+    public $route = null;
 
     /** @var null/object        \PDO                  */
     public $db = null;
@@ -15,11 +15,8 @@ class Controller
     /** @var null/object        Language              */
     public $language = null;
 
-    /** @var null/int           Language->lang_id     */
-    public $lang_id = null;
-
     /** @var string             Language->lang_key    */
-    public $lang_key = DEFAULT_LANGUAGE;
+    public $lang_key = null;
 
     /** @var null/object        Helper                */
     public $helper = null;
@@ -44,11 +41,10 @@ class Controller
         $this->error    =& $this->app->error;
         // language
         $this->language =& $this->app->language;
-        // set current language key and id
-        $this->lang_id  = $this->app->language->lang_id;
-        $this->lang_key = $this->app->language->lang_key;
+        // set current language key
+        $this->lang_key = $this->language->lang_key;
         // load helper
-        $this->helper  = new Helper($this->lang_key);
+        $this->helper  = new Helper();
         $this->request = new Request();
     }
 

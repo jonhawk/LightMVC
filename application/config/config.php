@@ -44,12 +44,6 @@ define('DB_CHARSET', 'utf8');
 define('DB_PRE', '');
 
 /**
- * Language status and default language key
- */
-define('LANGUAGE_ENABLED', false);
-define('DEFAULT_LANGUAGE', 'lv');
-
-/**
  * Image folders
  */
 define('IMAGE_FOLDER',            APP_PUB.'assets/images');

@@ -3,111 +3,118 @@ namespace core;
 
 class Language extends Model
 {
-    /** @var int        Language id                 */
-    public $lang_id = null;
+    /** @var array      Language config             */
+    public $config      = null;
+
+    /** @var boolean    Language status             */
+    public $enabled     = false;
 
     /** @var string     Language key                */
-    public $lang_key = null;
+    public $lang_key    = null;
 
-    /** @var string     Default language key        */
-    public $default_key = DEFAULT_LANGUAGE;
-
-    /** @var array      Error status un message     */
-    public $error = null;
+    /** @var array      Translatable words          */
+    public $words       = null;
 
     function __construct()
     {
         parent::__construct();
-        $this->setLangId($this->app->route->lang_key);
+        $this->config = $this->loadConfig();
+        if(is_null($this->config)) {
+            $this->app->error->exception("Language config file is empty", "Language");
+        } else {
+            $this->enabled = $this->config['enabled'];
+        }
     }
 
     /**
-     * Set active language id
+     * Initialise language
+     */
+    public function init() {
+        if ($this->enabled) {
+            $this->setDefaultLanguage();
+            $this->setLanguage($this->app->route->lang_key);
+        }
+    }
+
+    /**
+     * Load language config file
+     */
+    private function loadConfig() {
+        if (is_file(APP.'config/language.php')) {
+            return include(APP.'config/language.php');
+        } else {
+            $this->app->error->exception("Language config file doesn't exist", "Language");
+            return null;
+        }
+    }
+
+    /**
+     * Load language translations
+     */
+    public function load($path, $lang=null) {
+        $lang = (!is_null($lang) ? $lang : $this->lang_key);
+
+        // check if language exists in config
+        if (!$this->languageExists($lang))
+            return null;
+
+        // perhaps it was already loaded
+        if (isset($words[$lang][$path]))
+            return $words[$lang][$path];
+
+        // otherwise load file and save it
+        $words[$lang][$path] = $this->loadLanguageFile($path, $lang);
+        return $words[$lang][$path];
+    }
+
+    /**
+     * Load language file
+     */
+    private function loadLanguageFile($path, $lang) {
+        $filepath = APP.'lang/'.$lang.'/'.$path.'.php';
+        if (is_file($filepath)) {
+            return include($filepath);
+        } else {
+            $this->app->error->exception("Specified language file doesn't exist", "Language");
+            return null;
+        }
+    }
+
+    /**
+     * Checks if language key exists in config
+     */
+    private function languageExists($lang) {
+        if (!in_array($lang, $this->config['languages'])) {
+            $this->app->error->exception("Specified language doesn't exist", "Language");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Set active language
      * @param string
      */
-    private function setLangId($lang_key) {
-
-        if (is_null($lang_key)) {
-            $this->setDefaultLang();
+    private function setLanguage($lang) {
+        if (is_null($lang) OR !$this->languageExists($lang)) {
+            $this->setDefaultLanguage();
         } else {
-            // check if specified language exists
-            $sql = "SELECT * FROM ".DB_PRE."languages WHERE keyword = :lang_key LIMIT 1";
-            $query = $this->db->prepare($sql);
-            $parameters = array(':lang_key' => $lang_key);
-
-            // useful for debugging: you can see the SQL behind above construction by using:
-            // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
-
-            $query->execute($parameters);
-
-            if ($query->rowCount()>0) {
-                $language = $query->fetch();
-                $this->lang_id  = intval($language->id);
-                $this->lang_key = $language->keyword;
-            } else {
-                $this->error = array('message' => 'Specified language doesn\'t exist!');
-                $this->setDefaultLang();
-            }
+            $this->lang_key = $lang;
         }
-
     }
 
     /**
      * Set default language
      */
-    private function setDefaultLang() {
-        // check for default language
-        $sql = "SELECT * FROM ".DB_PRE."languages WHERE is_main = 1 LIMIT 1";
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        if ($query->rowCount()>0) {
-            $language = $query->fetch();
-            $this->lang_id  = intval($language->id);
-            $this->lang_key = $language->keyword;
-        } else {
-            $this->error = array('message' => 'No main language set in DB or no languages exist at all!');
-        }
+    private function setDefaultLanguage() {
+        if (isset($this->config['default']) && !empty($this->config['default'])) {
+            if ($this->languageExists($this->config['default']))
+                $this->lang_key =  $this->config['default'];
+            else
+                $this->app->error->exception("Default language set in config doesn't exist in language array", "Language");
+        } else
+            $this->app->error->exception("No default language set in config", "Language");
     }
 
-    /**
-     * Get translated word
-     */
-    public function word ($id) {
-        // if input is int (for translate id)
-        if (filter_var($id, FILTER_VALIDATE_INT)) {
-            $where = 'tr.id = :translate_id';
-            $parameters = array(':translate_id' => $id, ':lang_id' => $this->lang_id);
-
-        // if input is string (for translate keyword)
-        } elseif (mb_strlen($id)>0) {
-            $where = 'tr.keyword = :translate_key';
-            $parameters = array(':translate_key' => $id, ':lang_id' => $this->lang_id);
-
-        } else {
-            return '[[Invalid ID|Key]]';
-        }
-
-        // get translate from db
-        $sql = "SELECT val.value FROM reviews_translates tr
-                LEFT JOIN ".DB_PRE."translates_val val ON val.translate_id = tr.id AND val.language_id = :lang_id
-                WHERE {$where} AND val.value IS NOT NULL LIMIT 1";
-
-        $query = $this->db->prepare($sql);
-        $query->execute($parameters);
-
-        if ($query->rowCount() > 0) {
-            $word = $query->fetch();
-            return $word->value;
-        } else {
-            return '[[Missing translation]]';
-        }
-    }
-
-    /**
-     * Get translated word encoded
-     */
-    public function wordEnc ($id) {
-        return htmlspecialchars($this->word($id), ENT_QUOTES, 'UTF-8', false);
-    }
 }

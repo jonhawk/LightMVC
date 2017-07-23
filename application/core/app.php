@@ -28,35 +28,37 @@ class App
     /**
      * Construct application
      * Order is important!
-     * *Database connection must be first
-     * *Route must load before language
-     * *View must load after language
-     * *Error must load after view and language
-     * *Language errors must be checked after error controller
-     * *Main controller must load last
      */
     public function __construct()
     {
         // set instance of self
         self::$instance =& $this;
 
-        // open database connection
-        $this->openDatabaseConnection();
-
-        // load route
-        $this->loadRoute();
-
-        // load language
-        $this->loadLanguage();
-
         // load view
+        // this ones first, because error controller needs View
         $this->loadView();
 
         // load error controller
+        // we load this early because other controllers might throw an error
         $this->loadError();
 
+        // open database connection
+        $this->openDatabaseConnection();
+
+        // load language
+        // at first we just load language class and it's config
+        $this->loadLanguage();
+
+        // load route
+        // route needs to know, if language is enabled
+        $this->loadRoute();
+
+        // init language
+        // to initialise language, route must first get language key form URL
+        $this->initLanguage();
+
         // check language errors
-        $this->checkLanguage();
+        $this->checkLanguageErrors();
 
         // load main controller
         $this->loadController();
@@ -65,8 +67,7 @@ class App
     /**
      * Get instance
      */
-    public static function &getInstance()
-    {
+    public static function &getInstance() {
         return self::$instance;
     }
 
@@ -98,10 +99,26 @@ class App
 
     /**
      * Load language
-     * @param string language key
      */
     private function loadLanguage() {
         $this->language = new Language();
+    }
+
+    /**
+     * Initialise language
+     */
+    private function initLanguage() {
+        $this->language->init();
+    }
+
+    /**
+     * Check for language errors (must load after error controller)
+     */
+    private function checkLanguageErrors() {
+        // check if language library throwed an error
+        if (!empty($this->error->exceptions['Language'])) {
+            $this->error->show404();
+        }
     }
 
     /**
@@ -116,18 +133,6 @@ class App
      */
     private function loadError() {
         $this->error    = new Error();
-        /*  */
-
-    }
-
-    /**
-     * Check for language errors (must load after error controller)
-     */
-    private function checkLanguage() {
-        // check if language library throwed an error
-        if (!is_null($this->language->error)) {
-            $this->error->show404();
-        }
     }
 
     /**

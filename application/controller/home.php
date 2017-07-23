@@ -23,6 +23,8 @@ class Home extends Controller {
 
         $data['hello']          = $helloClass->getHello();
         $data['title']          = $helloClass->getHello();
+        $data['words']          = $this->language->load('main');
+
         // load view with prepared data
         $this->view->load('layout/header', $data);
         $this->view->load('index', $data);

@@ -3,15 +3,11 @@ namespace core;
 
 class Helper
 {
-    /** @var string language key  */
-    private $lang_key = null;
+    /** @var null/object    \core\App   */
+    private $app = null;
 
-    /**
-     * @param string $lang_key
-     */
-    function __construct($lang_key=DEFAULT_LANGUAGE)
-    {
-        $this->lang_key = $lang_key;
+    function __construct() {
+        $this->app =& getInstance();
     }
 
 
@@ -61,9 +57,9 @@ class Helper
     }
 
     public function redirect($url='', $lang_key=null) {
-        if (LANGUAGE_ENABLED) {
+        if ($this->app->language->enabled) {
             if (is_null($lang_key)) {
-                header('location: ' . URL . $this->lang_key . '/' . $url);
+                header('location: ' . URL . $this->app->language->lang_key . '/' . $url);
             } else {
                 header('location: ' . URL . $lang_key . '/' . $url);
             }
