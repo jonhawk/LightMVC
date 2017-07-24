@@ -179,7 +179,7 @@ class Route
     public function link($url='', $lang_key=null) {
         if ($this->app->language->enabled) {
             if (is_null($lang_key)) {
-                return URL . $this->lang_key . '/' . $url;
+                return URL . $this->app->language->lang_key . '/' . $url;
             } else {
                 return URL . $lang_key . '/' . $url;
             }
